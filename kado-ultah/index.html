@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Happy Birthday Bayii Akuu! ✨</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Caveat:wght@700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    html, body {
+      width: 100%;
+      height: 100dvh;
+      overflow: hidden;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #0f0718;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px;
+      position: relative;
+    }
+
+    /* Aurora Background */
+    .aurora {
+      position: fixed;
+      inset: -40%;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(255, 42, 133, 0.35), transparent 45%),
+        radial-gradient(circle at 80% 70%, rgba(121, 40, 202, 0.4), transparent 50%);
+      filter: blur(35px);
+      animation: auroraMove 12s ease-in-out infinite alternate;
+      z-index: 0;
+      pointer-events: none;
+    }
+    @keyframes auroraMove {
+      0% { transform: rotate(0deg) scale(1); }
+      100% { transform: rotate(12deg) scale(1.12); }
+    }
+
+    #particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .particle {
+      position: absolute;
+      bottom: -30px;
+      font-size: 1.1rem;
+      opacity: 0.7;
+      animation: floatUp linear infinite;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+      20% { opacity: 0.8; }
+      100% { transform: translateY(-105dvh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Layar Pembuka */
+    #overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at center, #1e0b36 0%, #0a0412 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 50;
+      text-align: center;
+      padding: 24px;
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .gift-icon {
+      font-size: 4rem;
+      margin-bottom: 14px;
+      animation: bounceGift 2s infinite;
+      filter: drop-shadow(0 0 20px rgba(255, 77, 148, 0.6));
+    }
+    @keyframes bounceGift {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .date-badge-intro {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 117, 175, 0.5);
+      color: #ff9ec7;
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      margin-bottom: 14px;
+    }
+    #overlay h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem;
+      line-height: 1.3;
+      max-width: 340px;
+      margin-bottom: 24px;
+      background: linear-gradient(to right, #fff, #ffb3d9);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .btn-open {
+      background: linear-gradient(135deg, #ff2a85, #ff6b6b);
+      color: white;
+      border: none;
+      padding: 15px 34px;
+      font-size: 1rem;
+      font-weight: 800;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 25px rgba(255, 42, 133, 0.6);
+    }
+
+    /* Kartu Utama Responsif HP (Tidak Akan Terpotong) */
+    .card {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 430px;
+      height: calc(100dvh - 24px);
+      max-height: 760px;
+      background: rgba(255, 255, 255, 0.09);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 28px;
+      padding: 18px 18px 20px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      transform: scale(0.94);
+      transition: all 0.7s ease;
+    }
+    .card.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Header Atas */
+    .header-area {
+      flex-shrink: 0;
+    }
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .card-date {
+      background: rgba(255, 42, 133, 0.25);
+      border: 1px solid rgba(255, 158, 199, 0.4);
+      padding: 5px 12px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #ffd1e6;
+    }
+    .music-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #fff;
+      padding: 5px 12px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .disc {
+      display: inline-block;
+      animation: spin 4s linear infinite;
+    }
+    .disc.paused { animation-play-state: paused; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    .progress-bars {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+    .bar {
+      flex: 1;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+    }
+    .bar.active {
+      background: linear-gradient(90deg, #ff2a85, #ff9a9e);
+      box-shadow: 0 0 8px #ff2a85;
+    }
+
+    /* Area Slide Tengah (Fleksibel Mengikuti Layar HP) */
+    .slides-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow-y: auto;
+      padding: 4px 2px;
+    }
+    .slide {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      animation: slideIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .slide.active { display: flex; }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(35px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Frame Foto Proporsional HP */
+    .photo-frame {
+      width: 92%;
+      background: #fff;
+      padding: 8px 8px 12px 8px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      margin-bottom: 14px;
+      transform: rotate(-1deg);
+    }
+    .slide:nth-child(even) .photo-frame { transform: rotate(1deg); }
+    .photo-frame img {
+      width: 100%;
+      height: clamp(160px, 28dvh, 230px);
+      object-fit: cover;
+      border-radius: 10px;
+      display: block;
+    }
+    .photo-tag {
+      font-family: 'Caveat', cursive;
+      color: #2b1055;
+      font-size: 1.3rem;
+      margin-top: 6px;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.45rem, 5vw, 1.85rem);
+      margin-bottom: 8px;
+      background: linear-gradient(to right, #ffffff, #ffc2df);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .message-box {
+      font-size: clamp(0.88rem, 3.6vw, 0.96rem);
+      line-height: 1.55;
+      color: #f3e8ff;
+      min-height: 75px;
+      padding: 0 4px;
+    }
+
+    /* Kue Interaktif */
+    .cake-box {
+      font-size: 4rem;
+      margin: 12px 0;
+      position: relative;
+      cursor: pointer;
+    }
+    .flame {
+      position: absolute;
+      top: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.8rem;
+      animation: flicker 0.4s infinite alternate;
+    }
+    .flame.out { display: none; }
+    @keyframes flicker {
+      0% { transform: translateX(-50%) scale(1) rotate(-3deg); }
+      100% { transform: translateX(-50%) scale(1.15) rotate(3deg); }
+    }
+
+    /* Navigasi Bawah Selalu Muncul */
+    .nav-footer {
+      flex-shrink: 0;
+      padding-top: 10px;
+    }
+    .swipe-hint {
+      text-align: center;
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 8px;
+    }
+    .nav-row {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+    }
+    .btn {
+      border: none;
+      padding: 13px 18px;
+      border-radius: 14px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .btn:active { transform: scale(0.96); }
+    .btn-back {
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+    .btn-next {
+      flex: 1;
+      background: linear-gradient(135deg, #ff2a85, #ff758c);
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(255, 42, 133, 0.4);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="aurora"></div>
+  <div id="particles"></div>
+
+  <!-- FILE MP3 OPSIONAL -->
+  <audio id="bg-music" loop>
+    <source src="lagu.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- LAYAR PEMBUKA -->
+  <div id="overlay">
+    <div class="gift-icon">🎁</div>
+    <div class="date-badge-intro">24 NOVEMBER 2026</div>
+    <h2>Sebuah Kejutan Kecil Untuk Hari Spesialmu</h2>
+    <button class="btn-open" onclick="mulaiWeb()">Buka Kado Sekarang ✨</button>
+  </div>
+
+  <!-- KARTU UTAMA -->
+  <div class="card" id="main-card">
+    <div class="header-area">
+      <div class="top-bar">
+        <span class="card-date">📅 24 • 11 • 2026</span>
+        <button class="music-btn" onclick="toggleMusik()">
+          <span class="disc" id="disc">💿</span>
+          <span id="music-label">Musik On</span>
+        </button>
+      </div>
+      <div class="progress-bars">
+        <div class="bar active"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+      </div>
+    </div>
+
+    <div class="slides-wrapper" id="swipe-area">
+      <!-- SLIDE 1 -->
+      <div class="slide active">
+        <div class="photo-frame">
+          <img src="foto1.jpeg" alt="Foto 1" onerror="this.src='https://images.unsplash.com/photo-1513151233558-d860c5398176?w=600'">
+          <div class="photo-tag">The Star of Today ✨</div>
+        </div>
+        <h1>Happy Birthday! 🎂</h1>
+        <div class="message-box" data-text="Hari ini dunia merayakan hadirnya seseorang yang luar biasa. Selamat bertambah usia sayangkuuuu, semoga harimu dipenuhi senyum paling tulus!"></div>
+      </div>
+
+      <!-- SLIDE 2 -->
+      <div class="slide">
+        <div class="photo-frame">
+          <img src="foto2.jpeg" alt="Foto 2" onerror="this.src='https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=600'">
+          <div class="photo-tag">Core Memories 📸</div>
+        </div>
+        <h1>Terima Kasih Sudah Bertahan</h1>
+        <div class="message-box" data-text="Terima kasih sudah melangkah sejauh ini, melewati hari-hari berat dengan hebat, dan tetap menjadi pribadi yang hangat bagi sekitarmu."></div>
+      </div>
+
+      <!-- SLIDE 3 -->
+      <div class="slide">
+        <div class="photo-frame">
+          <img src="foto3.jpeg" alt="Foto 3" onerror="this.src='https://images.unsplash.com/photo-1464349153735-7db50ed83c84?w=600'">
+          <div class="photo-tag">Best Wishes Always 🌟</div>
+        </div>
+        <h1>Doa Terbaik di Tahun Ini</h1>
+        <div class="message-box" data-text="Semoga setiap langkahmu dipermudah, segala impian yang sedang kamu perjuangkan segera terwujud, dan kebahagiaan selalu menyertaimu."></div>
+      </div>
+
+      <!-- SLIDE 4 -->
+      <div class="slide">
+        <div class="cake-box" onclick="tiupLilin()">
+          <span class="flame" id="flame">🔥</span>
+          🎂
+        </div>
+        <h1>Make a Wish! 🕯️</h1>
+        <div class="message-box" data-text="Pejamkan mata sejenak, panjatkan harapan terbaikmu untuk usia yang baru ini, lalu tekan tombol di bawah untuk meniup lilinnya!"></div>
+      </div>
+    </div>
+
+    <!-- TOMBOL NAVIGASI TERKUNCI DI BAWAH -->
+    <div class="nav-footer">
+      <div class="swipe-hint">Geser layar atau tekan tombol di bawah</div>
+      <div class="nav-row">
+        <button class="btn btn-back" id="btn-prev" onclick="pindahSlide(-1)" style="display: none;">←</button>
+        <button class="btn btn-next" id="btn-next" onclick="aksiTombolUtama()">Lanjut Baca ➔</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let slideIndex = 0;
+    const slides = document.querySelectorAll('.slide');
+    const bars = document.querySelectorAll('.bar');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+    let typingTimer;
+    let isPlaying = false;
+    let useSynth = false;
+    let synthInterval;
+    let audioCtx;
+
+    // Partikel melayang
+    const symbols = ['✨', '💖', '🎂', '🌸', '⭐'];
+    const particleContainer = document.getElementById('particles');
+    for (let i = 0; i < 15; i++) {
+      const el = document.createElement('div');
+      el.className = 'particle';
+      el.textContent = symbols[i % symbols.length];
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.animationDuration = (6 + Math.random() * 8) + 's';
+      el.style.animationDelay = (Math.random() * 5) + 's';
+      particleContainer.appendChild(el);
+    }
+
+    // Melodi Piano Happy Birthday Otomatis
+    function startMusicBox() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const notes = [
+        [261.63, 0.3], [261.63, 0.3], [293.66, 0.6], [261.63, 0.6], [349.23, 0.6], [329.63, 1.0],
+        [261.63, 0.3], [261.63, 0.3], [293.66, 0.6], [261.63, 0.6], [392.00, 0.6], [349.23, 1.0],
+        [261.63, 0.3], [261.63, 0.3], [523.25, 0.6], [440.00, 0.6], [349.23, 0.6], [329.63, 0.6], [293.66, 1.0],
+        [466.16, 0.3], [466.16, 0.3], [440.00, 0.6], [349.23, 0.6], [392.00, 0.6], [349.23, 1.2]
+      ];
+      let step = 0;
+      function playNextNote() {
+        if (!isPlaying || !useSynth) return;
+        const [freq, dur] = notes[step % notes.length];
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + dur);
+        step++;
+        synthInterval = setTimeout(playNextNote, dur * 650);
+      }
+      playNextNote();
+    }
+
+    function mulaiWeb() {
+      const overlay = document.getElementById('overlay');
+      overlay.style.opacity = '0';
+      setTimeout(() => overlay.style.display = 'none', 600);
+
+      document.getElementById('main-card').classList.add('visible');
+
+      const audio = document.getElementById('bg-music');
+      isPlaying = true;
+      audio.play().catch(() => {
+        useSynth = true;
+        startMusicBox();
+      });
+
+      ketikTeksSlide(0);
+      tembakConfettiKiriKanan();
+    }
+
+    function toggleMusik() {
+      const audio = document.getElementById('bg-music');
+      const disc = document.getElementById('disc');
+      const label = document.getElementById('music-label');
+
+      if (isPlaying) {
+        isPlaying = false;
+        audio.pause();
+        clearTimeout(synthInterval);
+        disc.classList.add('paused');
+        label.textContent = 'Musik Off';
+      } else {
+        isPlaying = true;
+        disc.classList.remove('paused');
+        label.textContent = 'Musik On';
+        if (useSynth) startMusicBox();
+        else audio.play();
+      }
+    }
+
+    function ketikTeksSlide(idx) {
+      clearTimeout(typingTimer);
+      const box = slides[idx].querySelector('.message-box');
+      const fullText = box.getAttribute('data-text');
+      box.textContent = '';
+      let charIdx = 0;
+
+      function typeChar() {
+        if (charIdx < fullText.length) {
+          box.textContent += fullText.charAt(charIdx);
+          charIdx++;
+          typingTimer = setTimeout(typeChar, 25);
+        }
+      }
+      typeChar();
+    }
+
+    function updateTombol() {
+      btnPrev.style.display = slideIndex === 0 ? 'none' : 'block';
+      if (slideIndex === slides.length - 1) {
+        btnNext.textContent = 'Tiup Lilin Sekarang 🎉';
+      } else if (slideIndex === slides.length - 2) {
+        btnNext.textContent = 'Kejutan Terakhir ➔';
+      } else {
+        btnNext.textContent = 'Lanjut Baca ➔';
+      }
+    }
+
+    function aksiTombolUtama() {
+      if (slideIndex === slides.length - 1) {
+        tiupLilin();
+      } else {
+        pindahSlide(1);
+      }
+    }
+
+    function pindahSlide(arah) {
+      const target = slideIndex + arah;
+      if (target < 0 || target >= slides.length) return;
+
+      slides[slideIndex].classList.remove('active');
+      bars[slideIndex].classList.remove('active');
+
+      slideIndex = target;
+
+      slides[slideIndex].classList.add('active');
+      bars[slideIndex].classList.add('active');
+      updateTombol();
+      ketikTeksSlide(slideIndex);
+    }
+
+    function tiupLilin() {
+      document.getElementById('flame').classList.add('out');
+      btnNext.textContent = 'Yeay! Wish Granted ✨';
+      tembakConfettiKiriKanan();
+    }
+
+    function tembakConfettiKiriKanan() {
+      confetti({ particleCount: 70, angle: 60, spread: 65, origin: { x: 0, y: 0.7 } });
+      confetti({ particleCount: 70, angle: 120, spread: 65, origin: { x: 1, y: 0.7 } });
+    }
+
+    // Fitur Swipe Layar HP (Geser Kiri / Kanan Pakai Jari)
+    let touchStartX = 0;
+    const swipeArea = document.getElementById('swipe-area');
+    swipeArea.addEventListener('touchstart', e => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    swipeArea.addEventListener('touchend', e => {
+      const touchEndX = e.changedTouches[0].screenX;
+      const diff = touchStartX - touchEndX;
+      if (Math.abs(diff) > 45) {
+        if (diff > 0) pindahSlide(1); // Geser ke kiri -> Slide berikutnya
+        else pindahSlide(-1);         // Geser ke kanan -> Slide sebelumnya
+      }
+    }, { passive: true });
+  </script>
+</body>
+</html>
